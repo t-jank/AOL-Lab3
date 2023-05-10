@@ -54,22 +54,33 @@ def random_number(rozklad,n): # <1,n>
 def bin_packing(ciag,algorithm):
     if algorithm=='next_fit' or algorithm=='nf':
         fill=0
-        bins_counter=0
+        bins_counter=1
         for elem in range (0,len(ciag)):
             fill+=ciag[elem]
             if fill>1:
-                elem-=1
-                fill=0
+                fill=ciag[elem]
                 bins_counter+=1
         return bins_counter
         
     #elif algorithm=='random_fit' or algorithm=='rf':
     
         
-    #elif algorithm=='first_fit' or algorithm=='ff':
-        
+    elif algorithm=='first_fit' or algorithm=='ff':
+        bins=[0]
+        for elem in range(0,len(ciag)):
+            d=1
+            for i in range(0,len(bins)):
+                if bins[i] + ciag[elem] <= 1:
+                    bins[i]+=ciag[elem]
+                    d=0
+                    break
+            if d==1:
+                bins.append(ciag[elem])
+        return len(bins)
+                
     
-    #elif algorithm=='best_fit' or algorithm=='bf':
+    elif algorithm=='best_fit' or algorithm=='bf':
+        bins=[0]
         
     
     #elif algorithm=='worst_fit' or algorithm=='wf':
@@ -80,15 +91,19 @@ def bin_packing(ciag,algorithm):
 
 
 rozklad = 'j'
-algorithm='nf'
-ciag=[]
-while len(ciag)<100:
-    elem=random.random()
-    k=random_number(rozklad,10)
-    for i in range(0,k):
-        ciag.append(elem)
-        if len(ciag)==100:
-            break
+algorithm='ff'
+rep=10
+suma=0
+for r in range(0,rep):
+    ciag=[]
+    while len(ciag)<100:
+        elem=random.random()
+        k=random_number(rozklad,10)
+        for i in range(0,k):
+            ciag.append(elem)
+            if len(ciag)==100:
+                break
+    suma+=bin_packing(ciag, algorithm)
+print(suma/rep)
 
-print(bin_packing(ciag, algorithm))
 
