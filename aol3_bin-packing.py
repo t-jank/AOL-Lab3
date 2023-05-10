@@ -62,9 +62,20 @@ def bin_packing(ciag,algorithm):
                 bins_counter+=1
         return bins_counter
         
-    #elif algorithm=='random_fit' or algorithm=='rf':
+    elif algorithm=='random_fit' or algorithm=='rf':
+        bins=[0]
+        for elem in range(0,len(ciag)):
+            bins_tmp=[]
+            for i in range(0,len(bins)):
+                if bins[i] + ciag[elem] <= 1:
+                    bins_tmp.append(i)
+            if len(bins_tmp)==0:
+                bins.append(ciag[elem])
+            else:
+                x=random.randint(0,len(bins_tmp)-1)
+                bins[bins_tmp[x]]+=ciag[elem]
+        return len(bins)
     
-        
     elif algorithm=='first_fit' or algorithm=='ff':
         bins=[0]
         for elem in range(0,len(ciag)):
@@ -77,22 +88,42 @@ def bin_packing(ciag,algorithm):
             if d==1:
                 bins.append(ciag[elem])
         return len(bins)
-                
-    
+
     elif algorithm=='best_fit' or algorithm=='bf':
         bins=[0]
+        for elem in range(0,len(ciag)):
+            d=1
+            for i in range(0,len(bins)):
+                if bins[i] + ciag[elem] <= 1:
+                    bins[i]+=ciag[elem]
+                    d=0
+                    break
+            if d==1:
+                bins.append(ciag[elem])
+            bins.sort(reverse=True)
+        return len(bins)
         
-    
-    #elif algorithm=='worst_fit' or algorithm=='wf':
-            
+    elif algorithm=='worst_fit' or algorithm=='wf':
+        bins=[0]
+        for elem in range(0,len(ciag)):
+            d=1
+            for i in range(0,len(bins)):
+                if bins[i] + ciag[elem] <= 1:
+                    bins[i]+=ciag[elem]
+                    d=0
+                    break
+            if d==1:
+                bins.append(ciag[elem])
+            bins.sort()
+        return len(bins)
     
     else: return 'nieznany algorytm'
 
 
 
 rozklad = 'j'
-algorithm='ff'
-rep=10
+algorithm='rf'
+rep=100
 suma=0
 for r in range(0,rep):
     ciag=[]
