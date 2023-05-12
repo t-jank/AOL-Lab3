@@ -6,8 +6,8 @@ Created on Tue May  9 14:22:58 2023
 """
 
 import random
-import matplotlib.pyplot as plt
-#import math
+#import matplotlib.pyplot as plt
+import math
 
 def Harmonic_Number(n):
    # return 0.5772156649 + math.log(n) + 1/(2*n)
@@ -121,10 +121,11 @@ def bin_packing(ciag,algorithm):
 
 
 
-rozklad = 'j'
-algorithm='rf'
-rep=100
+rozklad = 'g'
+algorithm='wf'
+rep=50000
 suma=0
+c=0
 for r in range(0,rep):
     ciag=[]
     while len(ciag)<100:
@@ -134,7 +135,12 @@ for r in range(0,rep):
             ciag.append(elem)
             if len(ciag)==100:
                 break
-    suma+=bin_packing(ciag, algorithm)
-print(suma/rep)
+    c_opt = math.ceil(sum(ciag))
+    c_a = bin_packing(ciag, algorithm)
+    c_tmp = math.ceil(c_a/c_opt * 100) / 100
+    if c_tmp>c:
+        c=c_tmp
+
+print(c)
 
 
